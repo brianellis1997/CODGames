@@ -9,10 +9,49 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Front Matter
+
+```{r}
+rm(list = ls())
+# Load libraries
+library(tidyverse)
+library(readxl)
+```
+
+
 ## Task 1
 
 1. Read the dataset into R.
 •	We have not covered methods for reading an .xlsx file into R. 
 •	Yes, you could save as .csv but that risks potential data loss. 
 •	It would be better to search for a method (R function) that allows you to open .xlsx files in R.
+
+```{r}
+# Read dataset
+COD <- read_excel("~/Downloads/CODGames2_mp.xlsx")
+head(COD)
+```
+
+## Task 2- Explore 6 variables
+
+2. Begin to explore the dataset. Explore 6 variables of your choice. (You should explore at least one categorical and at least one quantitative variable.)
+•	For each, you should identify the variable, the type of variable (categorical, quantitative, etc.), information about the types of values the variable can take, and the amount of missing data within the variable. 
+•	For each variable, report some summary statistics and make a visualization.
+o	If a variable is categorical, make a table of possible values and include counts or proportions. Then, make an appropriate plot to show the distribution of values.
+o	If a variable is quantitative, include some basic summary stats like the mean, median, standard deviation, min, max, etc. and make an appropriate plot to show the distribution of values.
+•	For each variable, you should write a few sentences to describe what you have learned about the variable. Remember, the goal is not to make the plot/calculate the summaries. The goal is to use plots and summaries to gain knowledge from the data.
+
+The first variable I will explore is the 'Result' variable.
+```{r}
+# List variable and data types
+glimpse(head(COD$Result))
+sum(is.na(COD$Result))
+```
+
+'Result' is a categorical variable even though it mainly contains integers. The values of the variable contain two sets of integer values, one the winning teams score (usually 100) and the other the losing team's score. This variable contains 0 missing values.
+
+```{r}
+# Summary statistics
+summary(COD$Result)
+```
 
