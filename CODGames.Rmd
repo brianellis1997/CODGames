@@ -1,0 +1,18 @@
+---
+title: "CODGames"
+author: "Brian Ellis"
+date: "2023-03-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 1
+
+1. Read the dataset into R.
+•	We have not covered methods for reading an .xlsx file into R. 
+•	Yes, you could save as .csv but that risks potential data loss. 
+•	It would be better to search for a method (R function) that allows you to open .xlsx files in R.
+
