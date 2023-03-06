@@ -51,7 +51,42 @@ sum(is.na(COD$Result))
 'Result' is a categorical variable even though it mainly contains integers. The values of the variable contain two sets of integer values, one the winning teams score (usually 100) and the other the losing team's score. This variable contains 0 missing values.
 
 ```{r}
-# Summary statistics
-summary(COD$Result)
+# Table of possible values of 'Results'
+table(COD$Result)
 ```
 
+```{r}
+# Visualization of 'Results'
+COD %>% 
+  ggplot(aes(x = Result)) +
+  geom_bar()
+```
+
+What I've learned about 'Result' from doing this exploratory data analysis is that it should really be classified as a quantitative variable or at least condensed in some way. It's not that useful of a variable in its current format since at least one of the scores has to be 100. What would be nice to do would be to make a new variable out of 'Result' and calculate the difference between the winning and losing team's scores as that would allow you to get more information than the variable in its current form.
+
+The second variable I will explore is 'Score'
+```{r}
+# List variable and data types
+glimpse(head(COD$Score))
+sum(is.na(COD$Score))
+```
+
+'Score' is a quantitative variable and contains 0 missing values. The values of the variable indicate the score from a match which is probably dependent on several other variables from this dataset.
+
+```{r}
+# Include summary statistics
+summary(COD$Score)
+```
+
+
+```{r}
+# Visualization of variable
+COD %>% 
+  ggplot(aes(x = Score)) +
+  geom_histogram(bins = 20, fill = "dodgerblue", color = "grey") +
+  labs(title = "Distribution of Scores",
+       x = "Score",
+       y = "Frequency")
+```
+
+From doing this initial exploration of the 'Score' variable, we can see that it is a continuous quantitative variable that ranges from around 100-7000. Both the median and the mode lay just under 3000 so that seems like the average value of score. Looking at the histogram plotted, the distribution of scores seems to be a little right-skewed which would mean that infrequent high scores are possible. 
