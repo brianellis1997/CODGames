@@ -86,7 +86,129 @@ COD %>%
   geom_histogram(bins = 20, fill = "dodgerblue", color = "grey") +
   labs(title = "Distribution of Scores",
        x = "Score",
-       y = "Frequency")
+       y = "Count")
 ```
 
 From doing this initial exploration of the 'Score' variable, we can see that it is a continuous quantitative variable that ranges from around 100-7000. Both the median and the mode lay just under 3000 so that seems like the average value of score. Looking at the histogram plotted, the distribution of scores seems to be a little right-skewed which would mean that infrequent high scores are possible. 
+
+The third variable I will explore is 'PrimaryWeapon'
+```{r}
+# List variable and data types
+glimpse(head(COD$PrimaryWeapon))
+sum(is.na(COD$PrimaryWeapon))
+```
+
+The variable 'PrimaryWeapon' is a categorical variable with 0 missing values. It looks like this variable lists the primary gun used by the player in a match. It would be interesting to see the effect this variable has on several factors such as 'Score'.
+
+```{r}
+# Table of possible values of 'Results'
+table(COD$PrimaryWeapon)
+```
+
+```{r}
+# Visualize distribution
+COD %>% 
+  ggplot(aes(x = PrimaryWeapon)) +
+  geom_bar(aes(fill = PrimaryWeapon)) +
+  labs(title = "Count of Primary Weapons",
+       x = "Type of Weapon",
+       y = "Count")
+```
+
+After looking at this table and visualization, it seems like there are a few favorite weapons of the players in this dataset. There are about 4 weapons that dominate the share of the distribution while the others show up infrequently. It would be nice to correlate the scores of players with their weapon choice so as to justify the use of a certain kind of weapon.
+
+
+The fourth variable I will explore is 'Eliminations'
+```{r}
+# List variable and data types
+glimpse(head(COD$Eliminations))
+sum(is.na(COD$Eliminations))
+```
+
+The variable is quantitative and has 0 missing values. It looks like it is the number of total kills a player has in a match. 
+
+```{r}
+# Include summary statistics
+summary(COD$Eliminations)
+```
+
+
+```{r}
+# Visualization of variable
+COD %>% 
+  ggplot(aes(x = Eliminations)) +
+  geom_histogram(binwidth = 3, fill = "violet", color = "grey") +
+  labs(title = "Distribution of Eliminations",
+       x = "Eliminations",
+       y = "Count")
+```
+
+This variable has a similar distribution and spread to the 'Score' variable which leads me to believe these two variables are highly correlated. We see the majority of elimination totals around 15 with a few outliers in the higher range.
+
+```{r}
+cor(COD$Score, COD$Eliminations)
+```
+
+We can confirm the correlation above, the two variables have a correlation of 0.836.
+
+The fifth variable I will explore is 'Deaths'
+```{r}
+# List variable and data types
+glimpse(head(COD$Deaths))
+sum(is.na(COD$Deaths))
+```
+
+The variable is quantitative and has 0 missing values. It looks like it is the number of total number of deaths a player has in a match. 
+
+```{r}
+# Include summary statistics
+summary(COD$Deaths)
+```
+
+
+```{r}
+# Visualization of variable
+COD %>% 
+  ggplot(aes(x = Deaths)) +
+  geom_histogram(binwidth = 3, fill = "black", color = "grey") +
+  labs(title = "Distribution of Deaths",
+       x = "Deaths",
+       y = "Count")
+```
+
+'Deaths' seems to be normally distributed with a mean and median hovering around 15. Just like 'Eliminations', I feel this variable is highly correlated with 'Score' and it would be interesting to plot their relationships.
+
+The sixth variable I will explore is 'Damage'
+```{r}
+# List variable and data types
+glimpse(head(COD$Damage))
+sum(is.na(COD$Damage))
+```
+
+'Damage' is a quantitative variable with 0 missing values. The values of this variable seem to be the damage a player takes or inflicts in a match.
+
+```{r}
+# Include summary statistics
+summary(COD$Damage)
+```
+
+
+```{r}
+# Visualization of variable
+COD %>% 
+  ggplot(aes(x = Damage)) +
+  geom_histogram(fill = "red", color = "grey") +
+  labs(title = "Distribution of Damage",
+       x = "Damage",
+       y = "Count")
+```
+
+'Damage' seems to be normally distributed with an average around 400. I would be interested to see the relationship this variable shares with 'PrimaryWeapon' as to see if a particular weaopn leads to higher damage.
+
+## Task 3
+
+Begin a list of questions that you have about the dataset. Suppose you are working on a project and your manager gives you this dataset. Write 3 questions that you would ask your manager.
+•	You have not been given any information about what the variables represent. So, if you are unsure about the meaning of any of the variables, write your questions.
+•	You have not been given any information about how the data were collected. If you have questions about the data collection, write them down.
+•	If you have any other questions, write them down.
+•	NOTE: Even if you are familiar with the game and think that you understand the meaning of the variables, you are still expected to write 3 potential questions that you could ask.
