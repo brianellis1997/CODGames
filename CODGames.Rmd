@@ -16,6 +16,7 @@ rm(list = ls())
 # Load libraries
 library(tidyverse)
 library(readxl)
+library(lubridate)
 ```
 
 
@@ -212,3 +213,66 @@ Begin a list of questions that you have about the dataset. Suppose you are worki
 •	You have not been given any information about how the data were collected. If you have questions about the data collection, write them down.
 •	If you have any other questions, write them down.
 •	NOTE: Even if you are familiar with the game and think that you understand the meaning of the variables, you are still expected to write 3 potential questions that you could ask.
+
+- Some of the variables are unclear in their names, like what does 'Damage' represent? The damage a player inflicts in a match or the damage that they receive?
+- It seems some of the variables need to be altered in order to get meaning from them, like 'Result' for instance should be mutated so as to make the variable more useful. Could we take the difference between the two numbers to make a more informative variable?
+- From where is this data sourced? Is this a collection of many different player's stats from a random time period, or a set time period? Is this one player's stats or many different player's stats?
+
+```{r}
+hey <-
+  COD %>% 
+  select(Eliminations, Deaths, Score, PrimaryWeapon)
+
+plot(hey)
+```
+```{r}
+mult <- lm(Score ~ Eliminations + Deaths + PrimaryWeapon, data = hey)
+summary(mult)
+```
+
+## Task 4 Part 1
+
+4. Asking a question that can be answered using the dataset and data visualization.
+•	Part 1 – You will answer my question: Is the player’s performance, as quantified by the amount of experience points gained (TotalXP variable) changing over time?
+o	To answer this, you should find a way to extract the month from the Date variable (we have not covered working with dates in STAT 380)
+o	The lubridate package is useful for working with dates
+o	Once you have the months, create side-by-side boxplots showing the TotalXP based on the Month, where the months are named (i.e., month should be June, not the number 6). The months should be in chronological order, not alphabetical order
+o	Based on the plot, answer the question. If you have knowledge about these types of games, you can also mention other variables that could affect TotalXP but were not included in the question.
+
+```{r}
+# Extracting month and creating new variable
+COD <-
+  COD %>% 
+    mutate(Month = month(as.POSIXlt(Date, format="%Y/%m/%d"))) %>% 
+  mutate(Month = month.name[Month])
+
+```
+
+```{r}
+# Side by Side boxplots
+level_order <- c('June', 'July', 'August') 
+
+COD %>% 
+  ggplot(aes(x = factor(Month, levels = level_order), y = TotalXP, color = Month)) +
+  geom_boxplot() +
+  labs(title = "Total Experience by Month",
+       x = "Month",
+       y = "Experience")
+```
+
+There doesn't seem to be a major discrepency between amount of experience gained over time as the IQRs of each boxplot overlay each other. This tells us that the player's performance as quantified by total experience is not changing over time. We should include more variables into our analysis that would give us more information as to why the total experience is not displaying significant differences over time. Variables such as amount of data points/games played in each month or type of game mode played could significantly be affecting player experience.
+
+## Task 4 Part 2
+
+•	Part 2 – You will write your own question, create a data visualization that can help answer your question, and write an answer to your question. The question/visualization should explore the relationship between at least 2 of the variables in the dataset. Be sure you include both the question and the answer to your question based on the visualization you have created.
+
+The question I want to answer is, is the player's performance measured by average score increasing over time?
+
+To do this, we already have the month variable for our data to measure performance over time. It would be nice to see how many games were played each month in order to fairly measure the player's performance using averages instead of total.
+
+```{r}
+COD %>% 
+  group_by(Month) %>% 
+  summarize(GamesPlayed = n())
+```
+
