@@ -276,3 +276,72 @@ COD %>%
   summarize(GamesPlayed = n())
 ```
 
+We can see that the player played much more games in June and July as compared with August. This provides more context to the question posed in Part 1 where the total experience seemed even throughout the months. We should do a barchart but with the proportion of experience gained per game in order to quantify performance over time better.
+
+```{r}
+COD %>% 
+  group_by(Month) %>% 
+  summarize(GamesPlayed = n(),
+    SumXP = sum(TotalXP),
+    AvgXP = SumXP / GamesPlayed)
+```
+
+
+
+```{r}
+COD %>% 
+  ggplot(aes(x = Score, y = TotalXP, color = PrimaryWeapon)) +
+  geom_point()
+```
+
+```{r}
+COD %>% 
+  ggplot(aes(x = Score, group = PrimaryWeapon, color = PrimaryWeapon, alpha = 0.1)) +
+  geom_density() +
+  labs(title = "Score by Primary Weapon",
+       x = "Score",
+       y = "Density")
+```
+
+```{r}
+COD %>% 
+  ggplot(aes(x = PrimaryWeapon, y = Score)) +
+  geom_boxplot() +
+  geom_point(color = "red", position = "jitter") +
+  labs(title = "Score by Primary Weapon")
+```
+
+```{r}
+COD %>% 
+  ggplot(aes(x = Damage, y = Score, color = PrimaryWeapon)) +
+  geom_point()
+```
+
+There's a strong positive correlation between Damage and Score.
+
+```{r}
+cor(COD$Damage, COD$Score)
+```
+
+```{r}
+# Plotting damage over time
+COD %>% 
+  ggplot(aes(x = factor(Month, levels = level_order), y = Damage, color = Month)) +
+  geom_boxplot() +
+  geom_point(position = "jitter") +
+  labs(title = "Damage Each Month",
+       x = "Month",
+       y = "Damage")
+```
+
+```{r}
+# Maps that give the most score
+COD %>% 
+  group_by(Choice) %>% 
+  summarize(N = n(),
+            TotalScore = sum(Score),
+            AvgScore = TotalScore / n()) %>% 
+  arrange(desc(AvgScore)) %>% 
+  head(10)
+```
+
