@@ -56,7 +56,7 @@ COD %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-What I've learned about 'Result' from doing this exploratory data analysis is that it should really be classified as a quantitative variable or at least condensed in some way. It's not that useful of a variable in its current format since at least one of the scores has to be 100. What would be nice to do would be to make a new variable out of 'Result' and calculate the difference between the winning and losing team's scores as that would allow you to get more information than the variable in its current form.
+What I've learned about 'Result' from doing this exploratory data analysis is that it should really be classified as a quantitative variable or at least condensed in some way. It's not that useful of a variable in its current format since at least one of the scores has to be 100. What would be nice to do would be to make a new variable out of 'Result' and calculate the difference between the winning and losing team's scores as that would allow you to retrieve more information as compared to the variable in its current form.
 
 The second variable I will explore is 'Score'
 ```{r}
@@ -83,7 +83,7 @@ COD %>%
        y = "Count")
 ```
 
-From doing this initial exploration of the 'Score' variable, we can see that it is a continuous quantitative variable that ranges from around 100-7000. Both the median and the mode lay just under 3000 so that seems like the average value of score. Looking at the histogram plotted, the distribution of scores seems to be a little right-skewed which would mean that infrequent high scores are possible. 
+From doing this initial exploration of the 'Score' variable, we can see that it is a continuous quantitative variable that ranges from around 100-7000. Both the median and the mode lay just under 3000 so that seems like the average value of score. Looking at the histogram plotted, the distribution of scores seems to be a little right-skewed.
 
 The third variable I will explore is 'PrimaryWeapon'
 ```{r}
@@ -143,7 +143,7 @@ This variable has a similar distribution and spread to the 'Score' variable whic
 cor(COD$Score, COD$Eliminations)
 ```
 
-We can confirm the correlation above, the two variables have a correlation of 0.836.
+We can confirm the correlation above, the two variables 'Score' and 'Eliminations' have a correlation of 0.836.
 
 The fifth variable I will explore is 'Deaths'
 ```{r}
@@ -234,13 +234,11 @@ There doesn't seem to be a major discrepency between amount of experience gained
 
 ## Task 4 Part 2
 
-•	Part 2 – You will write your own question, create a data visualization that can help answer your question, and write an answer to your question. The question/visualization should explore the relationship between at least 2 of the variables in the dataset. Be sure you include both the question and the answer to your question based on the visualization you have created.
+The question I want to answer is, what immediate changes can the player make to improve their overall performance as measured by Score?
 
-The question I want to answer is, what immediate changes can the player make to improve his overall performance as measured by Score?
+### Game Type
 
-### Game Mode
-
-To do this, we will quantify performance by several variables that that have an impact on 'Score'. Let's start with the 'GameType' variable which tells us that game mode the player chooses to play in.
+To do this, we will quantify performance by several variables that that have an impact on 'Score'. Let's start with the 'GameType' variable which tells us the game mode the player chooses to play in.
 
 ```{r}
 COD %>% 
@@ -249,7 +247,7 @@ COD %>%
   labs(x = "Game Type")
 ```
 
-The player heavily favors Team Deathmatch, but is it his best performing game type?
+The player heavily favors Team Deathmatch, but is it their best performing game type?
 ```{r}
 COD %>% 
   group_by(GameType) %>% 
@@ -259,11 +257,11 @@ COD %>%
   arrange(desc(AvgScore))
 ```
 
-His best performing game type is Domination, but with only 3 games played it doesn't give us enough confidence to be sure. One suggestion we can make is tell the player to play more Domination game types.
+Their best performing game type is Domination, but with only 3 games played it doesn't give us enough confidence to be sure. One suggestion we can make is tell the player to play more Domination game types.
 
 ### Map
 
-Now we'll focus on another area the player can control, the type of map the end up playing in. Although map selection is ultimately decided on by vote or random chance, if a map that is unfavorable towards the player's score is chosen, they can leave the game session and queue for another map that is better for them. Let's look at the player's better performing maps:
+Now we'll focus on another area the player can control, the type of map they end up playing in. Although map selection is ultimately decided on by vote or random chance, if a map that is unfavorable towards the player's score is chosen they can leave the game session and queue for another map that is better for them. Let's look at the player's better performing maps:
 
 ```{r}
 # Maps that give the most score
@@ -348,7 +346,7 @@ lmWeapon <- lm(Score ~ PrimaryWeapon, data = COD)
 summary(lmWeapon)
 ```
 
-Looking at the summary we can see a statistically significant result for the weapons AK-47 (the intercept), M16, and Pelington 703. In the case of AK-47, the model reports the highest scores and we would suggest that the player should utilize this weapon more. For weapons M16 and Pelington 703 there was significant decline in 'Score' from which we can suggest to the player that they should stop using those two weapons. The only drawback to this analysis is the lack of data points for the Ak-47, we saw in a previous boxplot the sparseness of the data concerning the AK-47 which doesn't give us a lot of confidence in our prediction that its usage will make a signficant increase in the players 'Score'. By looking at a few variables that are under the player's control, 'Choice', 'PrimaryWeapon', and 'GameType', we can suggest that the player takes the following actions to improve his overall performance as measured by 'Score': 
+Looking at the summary we can see a statistically significant result for the weapons AK-47 (the intercept), M16, and Pelington 703. In the case of AK-47, the model reports the highest scores and we would suggest that the player should utilize this weapon more. For weapons M16 and Pelington 703 there was significant decline in 'Score' from which we can suggest to the player that they should stop using those two weapons. The only drawback to this analysis is the lack of data points for the Ak-47, we saw in a previous boxplot the sparseness of the data concerning the AK-47 which doesn't give us a lot of confidence in our prediction that its usage will make a signficant increase in the players 'Score'. By looking at a few variables that are under the player's control, 'Choice', 'PrimaryWeapon', and 'GameType', we can suggest that the player takes the following actions to improve their overall performance as measured by 'Score': 
 <ul>
 <li>Do not use M16 and Pelington 703 as a primary weapon - instead, try using the Ak-47 more often</li>
 <li>Play only Domination and TDM Game Types and try playing more Domination</li>
@@ -372,7 +370,7 @@ Compare <- data.frame(Dataset = c("Original", "Filtered"),
                         AvgScore = c(mean(COD$Score),
                       mean(CODChange$Score)))
 Compare
-# Find percent improvement in mean score between datasets
+# Find improvement in mean score between datasets
 Compare %>% 
   pivot_wider(names_from = Dataset, values_from = AvgScore) %>% 
   summarize(Difference = Filtered - Original)
@@ -382,11 +380,11 @@ Compare %>%
 Compare %>% 
   ggplot(aes(x = Dataset, y = AvgScore, fill = Dataset)) +
   geom_col() +
-  labs(title = "Comparison of Means",
+  labs(title = "Comparison of Average Score",
        x = "Dataset",
        y = "Mean of Score") +
   geom_segment(aes(x = 1.5, y = 3251, xend = 1.5, yend = 2950), color = "red", size = 1, arrow = arrow(length = unit(0.08, "inches"))) +
-  geom_text(aes(x = 1.93, y = 3100), label = "Avg Score Difference of 306", color = "red")
+  geom_text(aes(x = 1.95, y = 3100), label = "Avg Score Difference of 306", color = "red")
 ```
 
-By comparing the mean score of the original data and the filtered data which contains only the suggestions we propose the player to make, we see a 'Score' improvement of 300 on average. All of these changes are immediate, actionable steps the player can make the next time he plays to increase his performance as measured by 'Score'.
+By comparing the mean score of the original data and the filtered data, which contains only the suggestions we propose the player to make, we see a 'Score' improvement of 306. All of these changes are immediate, actionable steps the player can make the next time they play to increase their performance as measured by 'Score'.
